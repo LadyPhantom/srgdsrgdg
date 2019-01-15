@@ -32,11 +32,14 @@ public class FilmManager {
      * @param film le film à créer ou modifier
      * @return l'id du film créé ou modifié
      */
-    public Long save(Film film){
+    /*public Long save(Film film){
         filmDao.save(film);
         return film.getId();
     }
-
+*/
+    public Film save(Film film){
+        return filmDao.save(film);
+    }
     /**
      * Supprime un rôle dans un film
      * @param roleId l'identifiant du rôle à supprimer

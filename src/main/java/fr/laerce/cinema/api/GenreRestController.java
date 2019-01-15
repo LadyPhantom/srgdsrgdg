@@ -2,7 +2,6 @@ package fr.laerce.cinema.api;
 
 import fr.laerce.cinema.model.Genre;
 import fr.laerce.cinema.service.GenreManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -43,7 +43,6 @@
                         th:each="person: ${persons}"
                         th:text="${person.givenname}+' '+${person.surname}"
                         th:value="${person.id}"
-
                 >
                     Prénom Nom
                 </option>
@@ -52,7 +51,7 @@
     </div>
     <div class="field">
         <label>Genres</label>
-        <select class="ui fluid dropdown" multiple="" th:field="*{genres}">
+        <select class="ui fluid dropdown" multiple="" th:field="*{genres}" id="selectedId">
             <option
                     th:each="genre: ${genresFilm}"
                     th:text="${genre.name}"
@@ -67,8 +66,10 @@
         <textarea form="film-form" rows="5" th:field="*{summary}"></textarea>
     </div>
 
-    <input class="ui button" type="submit" value="Valider">
-
+    <!--<input class="ui button" type="submit" value="Valider">-->
+    <div class="ui primary button" id="button-valid-film" onclick="validFilm()">
+        Valider
+    </div>
 </form>
 
 
@@ -178,6 +179,56 @@
             selector: '#summary'
         });
     })
+
+    function validFilm() {
+        var idFilm = $('#id').val();
+        // var director = {
+            // "id" : $("#director option:selected").val(),
+            // "surname" : $("#director option:selected").text().split(" ").pop()
+        // }
+            //$("option:selected").val()
+            //
+        //
+        // console.log(director.id);
+        // console.log(director.surname);
+
+        var film = {
+            "id" : idFilm,
+            "title" : $('#filmTitle') + idFilm ,
+            "rating" : $('#rating').val() ,
+            "image_path" : $('#imagePath').val() ,
+            "summary" : $('#summary').val() ,
+            "releaseDate" : $('#releaseDate').val()
+        };
+
+        // "director" :
+        //     {
+        //         "id" : $("#director option:selected").val(),
+        //         "surname" : $("#director option:selected").text().split(" ").pop()
+        //     }
+
+        // console.log(film.director.surname);
+
+        //"{ \"id\" : $("#director option:selected").val() ,\"surname\" : $("#director option:selected").text().split(" ").pop()}"
+
+        $.ajax({
+            url: '/api/film',
+            type: 'put',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnFilmApi,
+            data: JSON.stringify(film)
+        });
+    }
+    
+    function onSuccessUpdateFilm() {
+        
+    }
+    
+    function onErrorOnFilmApi() {
+
+    }
 
 </script>
 </body>

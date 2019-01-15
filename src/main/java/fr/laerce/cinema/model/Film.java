@@ -33,16 +33,16 @@ public class Film {
     @Column(name="release_date", nullable = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
+
+
     @ManyToOne
     @JoinColumn(name ="film_director")
     @JsonManagedReference
     private Person director;
 
-
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = false)
     @JsonBackReference
     private Set<Play> roles;
-
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="film_genre", joinColumns = @JoinColumn(name="film_id"),
@@ -50,11 +50,9 @@ public class Film {
     @JsonManagedReference
     private Set<Genre> genres;
 
-
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = false)
     @JsonIgnore
     private Set<Review> reviews;
-
 
     public long getId() {
         return id;

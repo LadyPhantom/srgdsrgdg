@@ -2,10 +2,7 @@ package fr.laerce.cinema.api;
 
 import fr.laerce.cinema.model.Film;
 import fr.laerce.cinema.service.FilmManager;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,8 +12,8 @@ public class FilmRestController {
     private FilmManager filmManager;
 
     public FilmRestController(FilmManager filmManager){
-        assert(filmManager != null);
         this.filmManager = filmManager;
+        assert(filmManager != null);
     }
 
 
@@ -28,5 +25,13 @@ public class FilmRestController {
     @GetMapping("/{id}")
     public Film getById(@PathVariable("id")long id){
         return filmManager.getById(id);
+    }
+
+
+    @PutMapping("")
+    public Film mod(@RequestBody Film film){
+//        System.out.println("arrive");
+//        return new Film();
+        return filmManager.save(film);
     }
 }
