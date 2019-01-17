@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <div th:fragment="header-css" th:remove="tag">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="webjars/Semantic-UI/2.4.1/semantic.min.css"
+              th:href="@{/webjars/Semantic-UI/2.4.1/semantic.min.css}"/>
+
+        <link rel="stylesheet" href="css/cinema.css"
+              th:href="@{/css/cinema.css}"
+              type="text/css" media="all" />
+
+    </div>
+
+</head>
+<body>
+
+<div th:fragment="header-page">
+
+    <div id="header">
+        <div class="ui padded grid">
+
+            <div class="two column  row">
+                <div class="left floated column">
+                    <img class="ui small image" th:src="@{/images/logo-placeholdr.bmp}">
+                </div>
+
+                <div class="right floated column">
+                    <div class="ui vertical right floated buttons">
+
+                        <button class="ui yellow button">Connexion</button>
+                        <button class="ui button">Inscription</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ////// Menu //////-->
+        <div class="ui center aligned container">
+            <div class="ui
+            yellow inverted  stackable huge compact menu">
+                <a class="item" id="menu-home" href="#" th:href="@{~/}">Home</a>
+                <a class="item" id="menu-films" href="#" th:href="@{/film/list}">Films</a>
+                <a class="item" id="menu-persons" href="#" th:href="@{/person/list}">Personnes</a>
+                <a class="item" id="menu-genres" href="#" th:href="@{/genre}">Genres</a>
+                <a class="item" id="menu-contact" href="#" >Contact</a>
+                <a class="item" id="menu-search" href="#" >Recherche</a>
+            </div>
+        </div>
+    </div>
+    <div class="ui hidden divider"></div>
+
+</div>
+
+</body>
+</html>

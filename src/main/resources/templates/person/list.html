@@ -4,13 +4,21 @@ xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <div th:replace="fragments/header :: header-css"></div>
+
 </head>
 <body>
+<div th:replace="fragments/header :: header-page"></div>
+
 <table>
     <tr th:each="person: ${persons}">
         <td><span th:utext="${person.surname}"></span> <a href="#" th:href="@{'/person/detail/'+${person.id}}">detail</a> </td>
     </tr>
 </table>
 
+
+<div th:replace="fragments/footer :: footer-js"></div>
+<div th:replace="fragments/footer :: footer-sticky"></div>
 </body>
 </html>

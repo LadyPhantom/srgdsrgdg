@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestion des genres</title>
-    <div th:replace="fragments/layout :: header-css"></div>
+    <div th:replace="fragments/header :: header-css"></div>
 </head>
 <body>
-<div th:include="fragments/layout :: header-page"></div>
+<div th:replace="fragments/header :: header-page"></div>
 
 <div class="ui modal">
     <div class="ui container padded">
@@ -54,7 +54,8 @@
     </tbody>
 </table>
 
-<div th:include="fragments/layout :: footer-js"></div>
+<div th:replace="fragments/footer :: footer-js"></div>
+<div th:replace="fragments/footer :: footer-sticky"></div>
 
 <script type="application/javascript">
     $('#menu-genres').addClass("active");

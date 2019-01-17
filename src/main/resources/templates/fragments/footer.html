@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="footer-js">
+    <script src="webjars/jquery/3.3.1-1/jquery.min.js"
+            th:src="@{/webjars/jquery/3.3.1-1/jquery.min.js}"></script>
+    <script src="webjars/Semantic-UI/2.4.1/semantic.min.js"
+            th:src="@{/webjars/Semantic-UI/2.4.1/semantic.min.js}"></script>
+    <script src="webjars/tinymce/4.7.9/tinymce.min.js"
+            th:src="@{/webjars/tinymce/4.7.9/tinymce.min.js}"></script>
+    <script type="application/javascript">
+        $('.ui.dropdown.item')
+            .dropdown();
+    </script>
+</div>
+<div th:fragment="footer-sticky">
+
+    <div class="ui hidden section divider"></div>
+    <div class="ui inverted footer basic segment">
+        <div class="ui container">
+            <p>
+                Place sticky footer content here.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+
+</body>
+</html>

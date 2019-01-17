@@ -1,0 +1,30 @@
+
+#header{
+    background-color: #18282f;
+}
+
+.ui.footer.segment {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 0;
+    background-color: #18282f;
+}
+
+/* Changer semantic ui color config'?*/
+.ui.inverted.menu .item{
+    background-color: #f6cf41;
+}
+
+.ui.inverted.menu a.item:hover{
+    background-color: black;
+}
+
+.main{
+    background-color: #fbfbfb;
+}
+
+.ui.yellow.button{
+
+    background-color: #f6cf41;
+}

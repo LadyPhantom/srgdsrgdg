@@ -4,18 +4,233 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <div th:replace="fragments/layout :: header-css">
-    </div>
+    <!--<div th:replace="fragments/layout :: header-css">-->
+    <!--</div>-->
+
+    <!--<style>
+
+        #header{
+            background-color: #18282f;
+        }
+
+        .ui.footer.segment {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            margin-bottom: 0;
+            background-color: #18282f;
+        }
+
+        /* Changer semantic ui color config'?*/
+        .ui.inverted.menu .item{
+            background-color: #f6cf41;
+        }
+
+        .ui.inverted.menu a.item:hover{
+            background-color: black;
+        }
+
+        .main{
+            background-color: #fbfbfb;
+        }
+
+    </style>-->
+
+    <div th:replace="fragments/header :: header-css"></div>
 
 </head>
 <body>
-<div id="header">
+<div th:replace="fragments/header :: header-page"></div>
 
+
+<!-- /////////////////// Main /////////////////////-->
+<div class="main ui container" th:object="${film}">
+    <div class="ui grid container"> <!--  Grid  -->
+
+
+        <div class="centered row">
+                <h1 class="ui header">Modification film</h1>
+        </div>
+
+
+        <!-- /////////////////// Détails film /////////////////////-->
+        <div class="row">
+
+            <div class="sixteen wide column">
+
+                <h2 class="ui dividing header">Fiche signalétique</h2>
+                <!-- ....................................... -->
+
+                <div class="ui grid">
+                    <div class="centered fourteen wide column" style="background-color: #f6cf41">
+                        <div class="ui two column grid">
+
+                            <div class="five wide column">
+                                <!-- 1ere colone : image -->
+                                <img src="http://fr.web.img4.acsta.net/r_1920_1080/pictures/15/10/18/18/56/052074.jpg"
+                                     th:src="@{'/img/poster/film/'+${film.id}}"
+                                     class="ui medium image">
+                            </div>
+
+
+                            <div class="eleven wide column">
+                                <div class="row">
+
+                                    <form class="ui form">
+
+                                        <div class="field">
+                                            <input th:field="${film.id}" type="hidden">
+                                            <input th:field="${film.imagePath}" type="hidden">
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Titre</label>
+                                            <input th:field="${film.title}" type="text">
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Notation</label>
+                                            <input th:field="*{rating}" type="number">
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Date de sortie</label>
+                                            <input th:field="*{releaseDate}" type="date">
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Réalisateur</label>
+                                            <select th:field="${film.director}" class="ui search dropdown">
+                                                <option
+                                                        th:each="person: ${persons}"
+                                                        th:text="${person.givenname}+' '+${person.surname}"
+                                                        th:value="${person.id}"
+                                                >
+                                                    Prénom Nom
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+
+
+                            <div class="sixteen wide column">
+
+                                <!-- ////// résumé et genres ////// -->
+                                <div class="row">
+
+                                    <form class="ui form" id="bottom-form-film">
+
+                                        <div class="field">
+                                            <label>Résumé</label>
+                                            <textarea form="bottom-form-film" rows="5" th:field="*{summary}"></textarea>
+                                        </div>
+
+                                        <div class="field">
+
+                                            <label>Genres</label>
+                                            <select class="ui fluid dropdown" multiple="" th:field="*{genres}" id="selectedId">
+                                                <option
+                                                        th:each="genre: ${genresFilm}"
+                                                        th:text="${genre.name}"
+                                                        th:value="${genre.id}"
+                                                >
+                                                    Drame
+                                                </option>
+                                            </select>
+
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- /////////////////// Roles /////////////////////-->
+        <div class="row">
+
+            <div class="sixteen wide column">
+                <h2 class="ui dividing header">Casting</h2>
+            </div>
+
+        </div>
+
+
+    </div>
 </div>
 
 
+<!-- ////////////////// Footer //////////////////-->
+<div th:replace="fragments/footer :: footer-js"></div>
+<div th:replace="fragments/footer :: footer-sticky"></div>
 
+<script type="application/javascript">
+    $('#menu-films').addClass("active");
+    $('.ui.dropdown').dropdown();
+    $(document).ready(function () {
+        tinymce.init({
+            selector: '#summary'
+        });
+    })
 
+    function validFilm() {
+        var idFilm = $('#id').val();
+        // var director = {
+        // "id" : $("#director option:selected").val(),
+        // "surname" : $("#director option:selected").text().split(" ").pop()
+        // }
+        //$("option:selected").val()
+        //
+        //
+        // console.log(director.id);
+        // console.log(director.surname);
+
+        var film = {
+            "id" : idFilm,
+            "title" : $('#filmTitle') + idFilm ,
+            "rating" : $('#rating').val() ,
+            "image_path" : $('#imagePath').val() ,
+            "summary" : $('#summary').val() ,
+            "releaseDate" : $('#releaseDate').val()
+        };
+
+        // "director" :
+        //     {
+        //         "id" : $("#director option:selected").val(),
+        //         "surname" : $("#director option:selected").text().split(" ").pop()
+        //     }
+
+        // console.log(film.director.surname);
+
+        //"{ \"id\" : $("#director option:selected").val() ,\"surname\" : $("#director option:selected").text().split(" ").pop()}"
+
+        $.ajax({
+            url: '/api/film',
+            type: 'put',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnFilmApi,
+            data: JSON.stringify(film)
+        });
+    }
+
+    function onSuccessUpdateFilm() {
+
+    }
+
+    function onErrorOnFilmApi() {
+
+    }
 
 
 </body>

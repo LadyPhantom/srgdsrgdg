@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${film.title}">Un film</title>
-    <div th:replace="fragments/layout :: header-css">
+    <div th:replace="fragments/header :: header-css"></div>
 
-    </div>
 </head>
 <body>
-
-<div th:include="fragments/layout :: header-page">
+<div th:replace="fragments/header :: header-page"></div>
 </div>
 
 
@@ -37,8 +35,9 @@
 </div>
 
 
+<div th:replace="fragments/footer :: footer-js"></div>
+<div th:replace="fragments/footer :: footer-sticky"></div>
 
-<div th:include="fragments/layout :: footer-js"></div>
 <script type="application/javascript">
     $('#menu-films').addClass("active");
 </script>
