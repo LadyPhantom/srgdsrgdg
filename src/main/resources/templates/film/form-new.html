@@ -39,13 +39,13 @@
     <div th:replace="fragments/header :: header-css"></div>
 
 </head>
-<body>
+<body class="site">
 <div th:replace="fragments/header :: header-page"></div>
 
 
 <!-- /////////////////// Main /////////////////////-->
-<div class="main ui container" th:object="${film}">
-    <div class="ui grid container"> <!--  Grid  -->
+<div class="main ui container site-content" th:object="${film}">
+    <div class="ui grid container grey-bg" > <!--  Grid  -->
 
 
         <div class="centered row">
@@ -62,7 +62,7 @@
                 <!-- ....................................... -->
 
                 <div class="ui grid">
-                    <div class="centered fourteen wide column" style="background-color: #f6cf41">
+                    <div class="centered fourteen wide column" >
                         <div class="ui two column grid">
 
                             <div class="five wide column">
@@ -126,13 +126,14 @@
 
                                         <div class="field">
                                             <label>Résumé</label>
-                                            <textarea form="bottom-form-film" rows="5" th:field="*{summary}"></textarea>
+                                            <textarea form="bottom-form-film" rows="5" th:field="*{summary}" onchange="onChangeOfSummary()"></textarea>
                                         </div>
 
                                         <div class="field">
 
                                             <label>Genres</label>
-                                            <select class="ui fluid dropdown" multiple="" th:field="*{genres}" id="selectedId">
+                                            <select class="ui fluid dropdown" multiple="" th:field="*{genres}" id="selectedId"
+                                                    th:onchange="'onChangeOfGenre('+ ${film.id} +')'">
                                                 <option
                                                         th:each="genre: ${genresFilm}"
                                                         th:text="${genre.name}"
@@ -156,16 +157,64 @@
 
 
         <!-- /////////////////// Roles /////////////////////-->
-        <div class="row">
+        <div class="row" id="casting-block">
 
             <div class="sixteen wide column">
                 <h2 class="ui dividing header">Casting</h2>
+                <!-- ....................................... -->
+
+                <div class="ui centered grid">
+                    <div class="row">
+                        <div class="fourteen wide column">
+
+                            <table class="ui selectable celled table">
+                                <thead>
+                                <tr>
+                                    <th>Acteur</th>
+                                    <th>Role</th>
+                                    <th>Rang</th>
+                                </tr>
+                                </thead>
+                                <tbody id="genre-body">
+                                <tr id="row-role-template">
+                                    <td id="actor-role-template">un acteur</td>
+                                    <td id="name-role-template">un role</td>
+                                    <td id="rank-role-template">un rank</td>
+                                </tr>
+                                <tr th:each="role: ${film.roles}" th:id="'row-role'+${role.id}"
+                                    th:onclick="'openDialogMod(' + ${role.id}+')'">
+                                    <td th:text="${role.actor.surname} + ' ' + ${role.actor.givenname}"
+                                        th:id="'actor-role'+ ${role.id}">actor
+                                    </td>
+                                    <td th:text="${role.name}" th:id="'name-role'+ ${role.id}">role</td>
+                                    <td th:text="${role.rank}" th:id="'rank-role'+ ${role.id}">rank</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <div class="ui button" onclick="openDialogAdd()">
+                                Ajouter un role
+                            </div>
+                    </div>
+                </div>
             </div>
 
         </div>
-
-
     </div>
+
+    <div class="ui hidden section divider"></div>
+    <div class="ui centered grid">
+        <div class="row">
+
+            <div class="ui primary button" onclick="saveAll()">
+                Valider
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
 
@@ -176,9 +225,17 @@
 <script type="application/javascript">
     $('#menu-films').addClass("active");
     $('.ui.dropdown').dropdown();
+
+    $('#row-role-template').hide();
+
     $(document).ready(function () {
         tinymce.init({
-            selector: '#summary'
+            selector: '#summary',
+            setup:function(ed) {
+                ed.on('blur', function (e) {
+onChangeOfSummary();
+                });
+            }
         });
     })
 
@@ -197,11 +254,15 @@
         var film = {
             "id" : idFilm,
             "title" : $('#filmTitle') + idFilm ,
-            "rating" : $('#rating').val() ,
+            "rating" : $('#rating').val()
+        };
+
+        /*
+        * ,
             "image_path" : $('#imagePath').val() ,
             "summary" : $('#summary').val() ,
             "releaseDate" : $('#releaseDate').val()
-        };
+        * */
 
         // "director" :
         //     {
@@ -232,6 +293,26 @@
 
     }
 
+    function onChangeOfGenre(filmId){
+
+        var newGenres = $('#selectedId').val();
+
+        console.log( $('input[name=title]').val() + " (id="+ filmId + ") :\n \t genres: "
+            + $('#selectedId').val() );
+
+    }
+    function onChangeOfSummary(){
+        console.log("change in summary");
+
+        console.log(
+
+            tinymce.get('summary').getContent()
+            // $( tinymce.get('summary').getContent() ).text()
+
+        );
+    }
+
+    </script>
 
 </body>
 </html>

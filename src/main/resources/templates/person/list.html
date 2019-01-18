@@ -8,14 +8,42 @@ xmlns:th="http://www.thymeleaf.org">
     <div th:replace="fragments/header :: header-css"></div>
 
 </head>
-<body>
+<body class="site">
 <div th:replace="fragments/header :: header-page"></div>
+<!--
 
 <table>
     <tr th:each="person: ${persons}">
         <td><span th:utext="${person.surname}"></span> <a href="#" th:href="@{'/person/detail/'+${person.id}}">detail</a> </td>
     </tr>
 </table>
+-->
+
+<div class="main ui container site-content" >
+
+    <div class="ui container grey-bg">
+
+        <h1 class="ui dividing header">Personnes</h1>
+        <p>Liste des personnes.</p>
+
+        <div class="ui link six cards center aligned grid stackable">
+
+            <a class="card" th:each="person: ${persons}" th:href="@{'/person/detail/'+${person.id}}" >
+
+                <div class="ui image">
+                    <img th:src="@{ '~/img/photo/person/'+ ${person.id} }">
+                </div>
+
+                <div class="content">
+                    <div class="header" th:text="${person.givenname + ' ' + person.surname}" >nom</div>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <div th:replace="fragments/footer :: footer-js"></div>
