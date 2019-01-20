@@ -34,30 +34,32 @@ public class Film {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate releaseDate;
 
+    // ---------- //
 
     @ManyToOne
     @JoinColumn(name ="film_director")
-    @JsonManagedReference
+    @JsonIgnore
     private Person director;
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = false)
-    @JsonBackReference
+    @JsonIgnore
     private Set<Play> roles;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="film_genre", joinColumns = @JoinColumn(name="film_id"),
     inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Genre> genres;
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL, orphanRemoval = false)
     @JsonIgnore
     private Set<Review> reviews;
 
+    // ----------------------------------------------------------------------- //
+
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -65,7 +67,6 @@ public class Film {
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -73,7 +74,6 @@ public class Film {
     public double getRating() {
         return rating;
     }
-
     public void setRating(double rating) {
         this.rating = rating;
     }
@@ -81,7 +81,6 @@ public class Film {
     public String getImagePath() {
         return imagePath;
     }
-
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
@@ -89,16 +88,13 @@ public class Film {
     public String getSummary() {
         return summary;
     }
-
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
-
     public LocalDate getReleaseDate() {
         return releaseDate;
     }
-
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
@@ -106,7 +102,6 @@ public class Film {
     public Person getDirector() {
         return director;
     }
-
     public void setDirector(Person person) {
         this.director = person;
     }
@@ -114,7 +109,6 @@ public class Film {
     public Set<Play> getRoles() {
         return roles;
     }
-
     public void setRoles(Set<Play> roles) {
         this.roles = roles;
     }
@@ -122,20 +116,18 @@ public class Film {
     public Set<Genre> getGenres() {
         return genres;
     }
-
     public void setGenres(Set<Genre> genres) {
         this.genres = genres;
     }
 
-
     public Set<Review> getReviews() {
         return reviews;
     }
-
     public void setReviews(Set<Review> reviews) {
         this.reviews = reviews;
     }
 
+    // ---------- //
 
     @Override
     public boolean equals(Object o) {

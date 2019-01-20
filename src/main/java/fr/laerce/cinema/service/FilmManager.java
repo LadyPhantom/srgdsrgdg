@@ -1,24 +1,38 @@
 package fr.laerce.cinema.service;
 
 import fr.laerce.cinema.dao.FilmDao;
-import fr.laerce.cinema.dao.RoleDao;
+import fr.laerce.cinema.dao.PlayDao;
 import fr.laerce.cinema.model.Film;
 import fr.laerce.cinema.model.Play;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Service pour la gestion des films
+ */
 @Component
 public class FilmManager {
-    //todo: remplacer par un constructeur
-    @Autowired
+    /**
+     * Les DAO qui gèrent les films et roles dans le système de persistance
+     */
     private FilmDao filmDao;
-    @Autowired
-    private RoleDao roleDao;
+    private PlayDao playDao;
 
+    /**
+     * Constructeur utilisé par Spring pour la construction du bean
+     * @param filmDao le DAO qui gère les films dans le système de persistance, ne peut être null
+     * @param playDao le DAO qui gère les roles dans le système de persistance, ne peut être null
+     */
+    public FilmManager(FilmDao filmDao, PlayDao playDao){
+        this.filmDao = filmDao;
+        this.playDao = playDao;
+        assert(filmDao != null);
+        assert(playDao != null);
+    }
 
-    //todo remplacer les valeurs renvoyées par des objet film (pas de long)
+    // ----------------------------------------------------------------------- //
+
     public Film getById(long id){
         return filmDao.findById(id).get();
     }
@@ -46,14 +60,14 @@ public class FilmManager {
      * @return l'id du film auquel appartenait le rôle
      */
 
-    public long removeRole(long roleId){
-        Play role = roleDao.findById(roleId).get();
+    public Film removeRole(long roleId){
+        Play role = playDao.findById(roleId).get();
         long filmId = role.getFilm().getId();
         Film film = filmDao.findById(filmId).get();
         film.getRoles().remove(role);
         filmDao.save(film);
-        roleDao.delete(role);
-        return filmId;
+        playDao.delete(role);
+        return film;
     }
 
     /**
@@ -62,15 +76,14 @@ public class FilmManager {
      * @param play le role à créer
      * @return l'id du film associé au rôle
      */
-    public long addRole(long filmId, Play play){
+    public Film addRole(long filmId, Play play){
         Film film = filmDao.findById(filmId).get();
         play.setFilm(film);
-        roleDao.save(play);
-        return play.getFilm().getId();
+        playDao.save(play);
+        return play.getFilm();
     }
 
-    public long saveRole(Play play){
-        roleDao.save(play);
-        return play.getId();
+    public Play saveRole(Play play){
+        return playDao.save(play);
     }
 }

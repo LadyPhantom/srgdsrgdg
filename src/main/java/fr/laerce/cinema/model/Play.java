@@ -13,64 +13,65 @@ public class Play {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
     private long id;
+
     @Basic
     @Column(name = "rank", nullable = false)
     private int rank;
+
     @Basic
     @Column(name = "name", nullable = false, length = 90)
     private String name;
+
+    // ---------- //
+
     @ManyToOne
     @JoinColumn(name="person_id")
     @JsonManagedReference
     private Person actor;
+
     @ManyToOne
     @JoinColumn(name="film_id")
     @JsonManagedReference
     private Film film;
 
+    // ----------------------------------------------------------------------- //
 
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
 
-
     public int getRank() {
         return rank;
     }
-
     public void setRank(int rank) {
         this.rank = rank;
     }
 
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-
     public Person getActor() {
         return actor;
     }
-
     public void setActor(Person acteur) {
         this.actor = acteur;
     }
 
-   public Film getFilm() {
+    public Film getFilm() {
         return film;
     }
-
     public void setFilm(Film film) {
         this.film = film;
     }
+
+    // ---------- //
 
     @Override
     public boolean equals(Object o) {

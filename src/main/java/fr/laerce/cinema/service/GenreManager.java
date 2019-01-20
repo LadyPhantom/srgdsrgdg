@@ -11,21 +11,23 @@ import java.util.List;
  */
 @Component
 public class GenreManager {
-
     /**
      * Le DAO qui gère le genre dans le système de persistance
      */
     private GenreDao genreDao;
-
 
     /**
      * Constructeur utilisé par Spring pour la construction du bean
      * @param genreDao le DAO qui gère le genre dans le système de persistance, ne peut être null
      */
     public GenreManager(GenreDao genreDao){
-        this.genreDao = genreDao;
+
         assert(genreDao != null);
+        this.genreDao = genreDao;
+
     }
+
+    // ----------------------------------------------------------------------- //
 
     /**
      * Obtnir la liste de tous les genres dans la base

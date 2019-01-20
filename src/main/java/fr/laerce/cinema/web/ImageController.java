@@ -18,12 +18,26 @@ import java.io.InputStream;
 @Controller()
 @RequestMapping(value = "/img")
 public class ImageController {
-    @Autowired
+
     FilmDao filmDao;
-    @Autowired
+
     PersonDao personDao;
-    @Autowired
+
     ImageManager imageManager;
+
+    public ImageController(FilmDao filmDao,
+                           PersonDao personDao,
+                           ImageManager imageManager){
+        this.filmDao = filmDao;
+        this.imageManager = imageManager;
+        this.personDao = personDao;
+
+        assert (filmDao != null);
+        assert (imageManager != null);
+        assert (personDao != null);
+    }
+
+    // ----------------------------------------------------------------------- //
 
     @GetMapping(value = "/poster/film/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody

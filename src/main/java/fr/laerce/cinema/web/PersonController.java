@@ -2,7 +2,7 @@ package fr.laerce.cinema.web;
 
 import fr.laerce.cinema.dao.FilmDao;
 import fr.laerce.cinema.dao.PersonDao;
-import fr.laerce.cinema.dao.RoleDao;
+import fr.laerce.cinema.dao.PlayDao;
 import fr.laerce.cinema.model.Person;
 import fr.laerce.cinema.model.Play;
 import fr.laerce.cinema.service.ImageManager;
@@ -17,33 +17,47 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "/person")
 public class PersonController {
-    @Autowired
-    PersonDao personneDao;
 
-    @Autowired
-    RoleDao roleDao;
+    PersonDao personDao;
 
-    @Autowired
+    PlayDao roleDao;
+
     FilmDao filmDao;
 
-    @Autowired
     ImageManager imm;
+
+    public PersonController(PersonDao personDao,
+                            PlayDao roleDao,
+                            FilmDao filmDao,
+                            ImageManager imm){
+        this.filmDao = filmDao;
+        this.imm = imm;
+        this.personDao = personDao;
+        this.roleDao = roleDao;
+
+        assert (filmDao != null);
+        assert (imm != null);
+        assert (personDao != null);
+        assert (roleDao != null);
+    }
+
+    // ----------------------------------------------------------------------- //
 
     @GetMapping("/list")
     public String list(Model model){
-        model.addAttribute("persons", personneDao.findAll());
+        model.addAttribute("persons", personDao.findAll());
         return "person/list";
     }
 
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") long id, Model model){
-        model.addAttribute("person", personneDao.findById(id).get());
+        model.addAttribute("person", personDao.findById(id).get());
         return "person/detail";
     }
 
     @GetMapping("/mod/{id}")
     public String mod(@PathVariable("id")long id, Model model){
-        model.addAttribute("person", personneDao.findById(id).get());
+        model.addAttribute("person", personDao.findById(id).get());
         model.addAttribute("newrole", new Play());
         return "person/form";
     }
@@ -65,7 +79,7 @@ public class PersonController {
                 System.out.println("Erreur lecture : "+ioe.getMessage());
             }
         }
-        personneDao.save(person);
+        personDao.save(person);
         return "redirect:/person/list";
     }
 

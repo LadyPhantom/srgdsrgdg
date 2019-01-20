@@ -9,10 +9,19 @@ import java.util.List;
 
 @Component
 public class PersonManager {
-    @Autowired
+
     PersonDao personDao;
+
+    public PersonManager(PersonDao personDao){
+        this.personDao = personDao;
+        assert (personDao != null);
+    }
 
     public List<Person> getAll(){
         return personDao.findAllByOrderBySurname();
+    }
+
+    public Person getById(Long id){
+        return personDao.findById(id).get();
     }
 }

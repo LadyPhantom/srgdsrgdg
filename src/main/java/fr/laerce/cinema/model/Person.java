@@ -30,6 +30,8 @@ public class Person {
     @Column(name = "image_path", nullable = true, length = 80)
     private String imagePath;
 
+    // ---------- //
+
     @OneToMany(mappedBy = "director")
     @JsonBackReference
     private Set<Film> directedFilms;
@@ -38,10 +40,11 @@ public class Person {
     @JsonBackReference
     private Set<Play> roles;
 
+    // ----------------------------------------------------------------------- //
+
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -49,7 +52,6 @@ public class Person {
     public String getSurname() {
         return surname;
     }
-
     public void setSurname(String surname) {
         this.surname = surname;
     }
@@ -57,15 +59,13 @@ public class Person {
     public String getGivenname() {
         return givenname;
     }
-
     public void setGivenname(String givenname) {
         this.givenname = givenname;
     }
 
-   public LocalDate getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
-
     public void setBirthday(LocalDate birthYear) {
         this.birthday = birthYear;
     }
@@ -73,7 +73,6 @@ public class Person {
     public String getImagePath() {
         return imagePath;
     }
-
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
@@ -81,10 +80,11 @@ public class Person {
     public Set<Film> getDirectedFilms() {
         return directedFilms;
     }
-
     public void setDirectedFilms(Set<Film> films) {
         this.directedFilms = films;
     }
+
+    // ---------- //
 
     @Override
     public boolean equals(Object o) {

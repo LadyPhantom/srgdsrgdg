@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleDao extends CrudRepository<Play, Long> {
+public interface PlayDao extends CrudRepository<Play, Long> {
 }

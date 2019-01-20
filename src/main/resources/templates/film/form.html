@@ -1,201 +1,285 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title}">Title</title>
-    <div th:replace="fragments/layout :: header-css">
+    <title>Title</title>
 
-    </div>
+    <div th:replace="fragments/header :: header-css"></div>
+
 </head>
-<body>
-<div th:include="fragments/layout :: header-page">
+<body class="site">
+<div th:replace="fragments/header :: header-page"></div>
+
+
+<!-- /////////////////////////////////// Main ////////////////////////////////////-->
+<div class="main ui container site-content" th:object="${film}">
+    <div class="ui grid container grey-bg" > <!--  Grid  -->
+
+
+        <div class="centered row">
+                <h1 class="ui header">Modification film</h1>
+        </div>
+
+
+        <!-- /////////////////// Détails film /////////////////////-->
+        <div class="row">
+
+            <div class="sixteen wide column" id="bloc-fiche-film">
+
+                <h2 class="ui dividing header">Fiche signalétique</h2>
+                <!-- ....................................... -->
+
+                <div class="ui grid">
+                    <div class="centered fourteen wide column" >
+                        <div class="ui two column grid">
+
+                            <div class="five wide column">
+                                <!--<img src="http://fr.web.img4.acsta.net/r_1920_1080/pictures/15/10/18/18/56/052074.jpg"
+                                     th:src="@{'/img/poster/film/'+${film.id}}"
+                                     class="ui medium image">-->
+
+                                <!-- todo: ajout upload d'image -->
+
+                            </div>
+
+
+                            <div class="eleven wide column">
+                                <div class="row">
+
+                                    <form class="ui form">
+
+                                        <div class="field">
+                                            <input th:field="${film.id}" type="hidden">
+                                            <input th:field="${film.imagePath}" type="hidden">
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Titre</label>
+                                            <input th:field="${film.title}" type="text" onchange="onChangeOfTitle()">
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Notation</label>
+                                            <input th:field="*{rating}" type="number" onchange="onChangeOfRating()">
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Date de sortie</label>
+                                            <input th:field="*{releaseDate}" type="date" onchange="onChangeOfReleaseDate()">
+                                        </div>
+
+                                        <div class="field">
+                                            <label>Réalisateur</label>
+                                            <select th:field="${film.director}" class="ui search dropdown"
+                                                    id="selectedDirector" onchange="onChangeOfDirector()">
+                                                <option
+                                                        th:each="person: ${persons}"
+                                                        th:text="${person.givenname}+' '+${person.surname}"
+                                                        th:value="${person.id}"
+                                                >
+                                                    Prénom Nom
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+
+
+                            <div class="sixteen wide column">
+
+                                <!-- ////// résumé et genres ////// -->
+                                <div class="row">
+
+                                    <form class="ui form" id="bottom-form-film">
+
+                                        <div class="field">
+                                            <label>Résumé</label>
+                                            <textarea form="bottom-form-film" rows="5" th:field="*{summary}" ></textarea>
+                                            <!--onchange="onChangeOfSummary()"-->
+                                        </div>
+
+                                        <div class="field">
+
+                                            <label>Genres</label>
+                                            <select class="ui fluid dropdown" multiple="" th:field="*{genres}" id="selectedId"
+                                                    onchange="onChangeOfGenre()">
+                                                    <!--th:onchange="'onChangeOfGenre('+ ${film.id} +')'">-->
+                                                <option
+                                                        th:each="genre: ${genresFilm}"
+                                                        th:text="${genre.name}"
+                                                        th:value="${genre.id}"
+                                                >
+                                                    Drame
+                                                </option>
+                                            </select>
+
+                                        </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- /////////////////// Roles /////////////////////-->
+        <div class="row" id="bloc-casting">
+
+            <div class="sixteen wide column">
+                <h2 class="ui dividing header">Casting</h2>
+                <!-- ....................................... -->
+
+                <div class="ui centered grid">
+                    <div class="row">
+                        <div class="fourteen wide column">
+
+                            <table class="ui selectable celled table">
+                                <thead>
+                                <tr>
+                                    <th>Acteur</th>
+                                    <th>Role</th>
+                                    <th>Rang</th>
+                                </tr>
+                                </thead>
+                                <tbody id="genre-body">
+                                <tr id="row-role-template">
+                                    <td id="actor-role-template">un acteur</td>
+                                    <td id="name-role-template">un role</td>
+                                    <td id="rank-role-template">un rank</td>
+                                </tr>
+                                <tr th:each="role: ${film.roles}" th:id="'row-role'+${role.id}"
+                                    th:onclick="'openDialogMod(' + ${role.id}+')'">
+                                    <td th:text="${role.actor.surname} + ' ' + ${role.actor.givenname}"
+                                        th:id="'actor-role'+ ${role.id}">actor
+                                    </td>
+                                    <td th:text="${role.name}" th:id="'name-role'+ ${role.id}">role</td>
+                                    <td th:text="${role.rank}" th:id="'rank-role'+ ${role.id}">rank</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <div class="ui button" onclick="openDialogAdd()">
+                                Ajouter un role
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="ui centered grid" id="bloc-bouton-ajout">
+        <!--<div class="ui hidden section divider"></div>-->
+        <div class="row">
+
+            <div class="ui primary button" onclick="addFilm()">
+                Valider
+            </div>
+
+            <a href="javascript:history.back()">
+                <div class="ui button">
+                    Annuler
+                </div>
+            </a>
+
+        </div>
+    </div>
+
 </div>
 
 
-<h2 class="ui dividing">Fiche signalétique</h2>
-<form
-        action="#"
-        class="ui form"
-        id="film-form"
-        method="post"
-        th:action="@{/film/add}"
-        th:object="${film}"
->
-    <input th:field="${film.id}" type="hidden">
-    <input th:field="${film.imagePath}" type="hidden">
-    <div class="field">
-        <label>Titre</label>
-        <input th:field="${film.title}" type="text">
-    </div>
-    <div class="three fields">
-        <div class="two wide field">
-            <label>Notation</label>
-            <input th:field="*{rating}" type="number">
-        </div>
-        <div class="four wide field">
-            <label>Date de sortie</label>
-            <input th:field="*{releaseDate}" type="date">
-        </div>
-        <div class="ten wide field">
-            <label>Réalisateur</label>
-            <select th:field="${film.director}" class="ui search dropdown">
-                <option
-                        th:each="person: ${persons}"
-                        th:text="${person.givenname}+' '+${person.surname}"
-                        th:value="${person.id}"
-                >
-                    Prénom Nom
-                </option>
-            </select>
-        </div>
-    </div>
-    <div class="field">
-        <label>Genres</label>
-        <select class="ui fluid dropdown" multiple="" th:field="*{genres}" id="selectedId">
-            <option
-                    th:each="genre: ${genresFilm}"
-                    th:text="${genre.name}"
-                    th:value="${genre.id}"
-            >
-                Drame
-            </option>
-        </select>
-    </div>
-    <div class="field">
-        <label>Résumé</label>
-        <textarea form="film-form" rows="5" th:field="*{summary}"></textarea>
-    </div>
-
-    <!--<input class="ui button" type="submit" value="Valider">-->
-    <div class="ui primary button" id="button-valid-film" onclick="validFilm()">
-        Valider
-    </div>
-</form>
+<!-- ////////////////// Footer //////////////////-->
+<div th:replace="fragments/footer :: footer-js"></div>
+<div th:replace="fragments/footer :: footer-sticky"></div>
 
 
-<h2 class="ui dividing header">Casting</h2>
-
-<form class="ui form"
-      method="post"
-      th:action="@{'/film/modrole/'+${play.id}}"
-      th:each="play: ${film.roles}"
-      th:object="${play}"
-
->
-    <input id="film" name="film" th:value="${film.id}" type="hidden">
-
-    <div class="four fields">
-        <div class="five wide field">
-            <label>Acteur</label>
-            <select name="actor" th:value="*{actor.id}" class="ui search dropdown">
-                <option
-                        th:each="person: ${persons}"
-                        th:selected="${person.id == play.actor.id}"
-                        th:text="${person.givenname}+' '+${person.surname}"
-                        th:value="${person.id}"
-                >
-                    Prénom Nom
-                </option>
-            </select>
-        </div>
-        <div class="six wide field">
-            <label>Rôle</label>
-            <input name="name" th:value="*{name}" type="text">
-        </div>
-        <div class="two wide field">
-            <label>Rang</label>
-            <input name="rank" th:value="*{rank}" type="number">
-        </div>
-
-
-        <div class="three wide field">
-            <label>&nbsp;</label>
-
-
-                <button type="submit" class="circular ui green icon button">
-                    <i class="white check icon icon"></i>
-                </button>
-
-                <a href="#" th:href="@{'/film/rmrole/'+ *{id}}" class="circular ui icon red button">
-                    <i class="white close icon icon"></i>
-                </a>
-
-        </div>
-    </div>
-
-
-</form>
-
-<form
-        action="#"
-        class="ui form"
-        method="post"
-        th:action="@{/film/addrole}"
-        th:object="${newrole}"
->
-    <input id="film" name="film" th:value="${film.id}" type="hidden">
-    <div class="four fields">
-        <div class="five wide field">
-            <label>Acteur</label>
-            <select name="actor" class="ui search dropdown">
-                <option value="" selected disabled>Choisissez un acteur</option>
-                <option
-                        th:each="person: ${persons}"
-                        th:text="${person.givenname}+' '+${person.surname}"
-                        th:value="${person.id}"
-
-                >
-                    Prénom Nom
-                </option>
-            </select>
-        </div>
-        <div class="six wide field">
-            <label>Rôle</label>
-            <input name="name" th:value="*{name}" type="text">
-        </div>
-        <div class="two wide field">
-            <label>Rang</label>
-            <input name="rank" th:value="*{rank}" type="number">
-        </div>
-
-
-        <div class="three wide field">
-            <label>&nbsp;</label>
-            <button type="submit" class="circular ui green icon button ">
-                <i class="white plus icon"></i>
-            </button>
-        </div>
-    </div>
-</form>
-
-
-<div th:include="fragments/layout :: footer-js"></div>
-
+<!-- todo: mettre les balises de scripts dans des fichiers .js -->
 <script type="application/javascript">
     $('#menu-films').addClass("active");
     $('.ui.dropdown').dropdown();
+
+    $('#row-role-template').hide();
+
+    if ( $('#id').val() == 0 ){
+        $('#bloc-casting').hide();
+        $('#bloc-bouton-ajout').show();
+    }else{
+        $('#bloc-bouton-ajout').hide();
+
+
+        function testChanges() {
+            console.log("checking changes");
+            if (changeInSummary == true){
+                console.log("changes occured");
+
+                onChangeOfSummary();
+
+                changeInSummary = false;
+            }
+        }
+
+    }
+
+
     $(document).ready(function () {
         tinymce.init({
-            selector: '#summary'
+            selector: '#summary',
+            init_instance_callback: function (editor) {
+                editor.on('paste', function (e) {
+                    console.log("paste in tinyMCE");
+                    changeInSummary = true;
+                    // onChangeOfSummary();
+                });
+                editor.on('change', function (e) {
+                    console.log("change in tinyMCE");
+                    changeInSummary = true;
+                    // onChangeOfSummary();
+                });
+                editor.on('keyup', function(e) {
+                    console.log('keyup in tinyMCE');
+                    changeInSummary = true;
+                    // onChangeOfSummary();
+                });
+            }
         });
-    })
+    });
 
-    /*setup:function(ed) {
-        ed.on('change', function (e) {
-            console.log('the event object ', e);
-            console.log('the editor object ', ed);
-            console.log('the content ', ed.getContent());
-        });
-    }*/
 
+    //todo: faire en sorte que l'interval n'est actif que lorsqu'il y a focus sur le résumé
+    var intervalID = window.setInterval(testChanges, 15000);
+
+    // Pour stoper l'interval:
+    // window.clearInterval(intervalID);
+
+    var changeInSummary = false;
+
+
+
+
+
+
+
+
+
+
+    // ------------------------------------------------------------
     function validFilm() {
         var idFilm = $('#id').val();
         // var director = {
-            // "id" : $("#director option:selected").val(),
-            // "surname" : $("#director option:selected").text().split(" ").pop()
+        // "id" : $("#director option:selected").val(),
+        // "surname" : $("#director option:selected").text().split(" ").pop()
         // }
-            //$("option:selected").val()
-            //
+        //$("option:selected").val()
+        //
         //
         // console.log(director.id);
         // console.log(director.surname);
@@ -203,11 +287,15 @@
         var film = {
             "id" : idFilm,
             "title" : $('#filmTitle') + idFilm ,
-            "rating" : $('#rating').val() ,
+            "rating" : $('#rating').val()
+        };
+
+        /*
+        * ,
             "image_path" : $('#imagePath').val() ,
             "summary" : $('#summary').val() ,
             "releaseDate" : $('#releaseDate').val()
-        };
+        * */
 
         // "director" :
         //     {
@@ -229,15 +317,258 @@
             data: JSON.stringify(film)
         });
     }
-    
-    function onSuccessUpdateFilm() {
-        
+    /*
+    function addFilm() {
+
+        var id = $('#id').val();
+        var newTitle = $('#title').val();
+        var newRating = $('#rating').val();
+        var newImgPath = $('#imagePath').val();
+        var newDate = $('#releaseDate').val();
+        var newSummary = tinymce.get('summary').getContent();
+
+        // ---------------------
+
+        var newData = {
+            "id" : id ,
+            "title" : newTitle,
+            "rating" : newRating,
+            "imagePath" : newImgPath,
+            "releaseDate" : newDate,
+            "summary" : newSummary
+        };
+
+        $.ajax({
+            url: '/api/film/add',
+            type: 'put',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: addFilmBis,
+            error: onErrorOnAddFilm,
+            data: JSON.stringify(newData)
+        });
     }
-    
-    function onErrorOnFilmApi() {
+    function addFilmBis(resultFilm) {
+
+        $('#id').val(resultFilm.id);
+
+        var newGenres = $('#selectedId').val();
+        var newDirector = $('#selectedDirector').val();
+
+        var newData = {
+            "filmId" : resultFilm.id,
+            "genresIds" : newGenres,
+            "directorId" : newDirector
+        };
+
+        $.ajax({
+            url: '/api/film/addBis',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessAddFilm,
+            error: onErrorOnAddFilmBis,
+            data: JSON.stringify(newData)
+        });
+    }
+
+
+    function onErrorOnAddFilm(jqXHR, textStatus, errorThrown) {
+        console.log('jqXHR:');
+        console.log(jqXHR);
+        console.log("message d'erreur: " + jqXHR.responseJSON.message);
+        console.log('textStatus:');
+        console.log(textStatus);
+        console.log('errorThrown:');
+        console.log(errorThrown);
+        alert("Echec de l'opération\n"+jqXHR.responseJSON.message);
+    }
+
+    function onSuccessAddFilm(resultFilm) {
+    }
+    function onErrorOnAddFilmBis(jqXHR, textStatus, errorThrown) {
+        console.log('jqXHR:');
+        console.log(jqXHR);
+        console.log("message d'erreur: " + jqXHR.responseJSON.message);
+        console.log('textStatus:');
+        console.log(textStatus);
+        console.log('errorThrown:');
+        console.log(errorThrown);
+        // alert("Echec de l'opération\n"+jqXHR.responseJSON.message);
+
+        $.ajax({
+            url: '/film/mod/' + $('#id').val() ,
+            type: 'post',
+            success: onSuccessAddFilm,
+            error: onErrorOnAddFilmBis
+        });
 
     }
+*/
+    function onSuccessUpdateFilm() {
+        console.log("succes");
+    }
+    function onErrorOnUpdateFilm(jqXHR, textStatus, errorThrown) {
+        console.log('jqXHR:');
+        console.log(jqXHR);
+        console.log("message d'erreur: " + jqXHR.responseJSON.message);
+        console.log('textStatus:');
+        console.log(textStatus);
+        console.log('errorThrown:');
+        console.log(errorThrown);
+        alert("Echec de l'opération\n"+jqXHR.responseJSON.message);
+    }
+
+
+    function onChangeOfTitle(){
+
+        var newTitle = $('#title').val();
+
+        var newData = {
+            "id" : $('#id').val() ,
+            "title" : newTitle
+        };
+
+        // console.log("title changed");
+        $.ajax({
+            url: '/api/film',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnUpdateFilm,
+            data: JSON.stringify(newData)
+        });
+    }
+    function onChangeOfRating(){
+
+        var newRating = $('#rating').val();
+
+        var newData = {
+            "id" : $('#id').val() ,
+            "rating" : newRating
+        };
+
+        // console.log("rating changed");
+        $.ajax({
+            url: '/api/film',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnUpdateFilm,
+            data: JSON.stringify(newData)
+        });
+    }
+    function onChangeOfImagePath(){
+
+        var newImgPath = $('#imagePath').val();
+
+        var newData = {
+            "id" : $('#id').val() ,
+            "imagePath" : newImgPath
+        };
+
+        $.ajax({
+            url: '/api/film',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnUpdateFilm,
+            data: JSON.stringify(newData)
+        });
+    }
+    function onChangeOfReleaseDate(){
+
+        var newDate = $('#releaseDate').val();
+
+        var newData = {
+            "id" : $('#id').val() ,
+            "releaseDate" : newDate
+        };
+
+        // console.log("date changed");
+        $.ajax({
+            url: '/api/film',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnUpdateFilm,
+            data: JSON.stringify(newData)
+        });
+    }
+    function onChangeOfSummary(){
+
+        var newSummary = tinymce.get('summary').getContent();
+
+        var newData = {
+            "id" : $('#id').val() ,
+            "summary" : newSummary
+        };
+
+        $.ajax({
+            url: '/api/film',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnUpdateFilm,
+            data: JSON.stringify(newData)
+        });
+    }
+
+    // ----------------------------------------
+    function onChangeOfGenre(){
+        // todo : aujouter la possibiliter de supprimer tout les genres (liste vide)
+        // = séparer l'update du genre de celui des director/autre ?
+
+        var newGenres = $('#selectedId').val();
+
+        var newData = {
+            "filmId" : $('#id').val(),
+            "genresIds" : newGenres
+        };
+
+        $.ajax({
+            url: '/api/film/mod',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnUpdateFilm,
+            data: JSON.stringify(newData)
+        });
+
+    }
+    function onChangeOfDirector(){
+
+        var newDirector = $('#selectedDirector').val();
+
+        var newData = {
+            "filmId" : $('#id').val(),
+            "directorId" : newDirector
+        };
+
+        console.log(newDirector);
+
+        $.ajax({
+            url: '/api/film/mod',
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: onSuccessUpdateFilm,
+            error: onErrorOnUpdateFilm,
+            data: JSON.stringify(newData)
+        });
+
+    }
+    // todo : changement/ajout/suppression roles
 
 </script>
+
+<!--<script th:src="@{js/film-form.js}"></script>-->
+
 </body>
 </html>

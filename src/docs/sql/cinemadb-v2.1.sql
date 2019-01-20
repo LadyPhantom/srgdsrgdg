@@ -191,3 +191,12 @@ INSERT INTO play (film_id, person_id, rank, name) VALUES (5, 15, 3, 'Mary');
 INSERT INTO play (film_id, person_id, rank, name) VALUES (4, 16, 1, 'Judas Ben-Hur');
 INSERT INTO play (film_id, person_id, rank, name) VALUES (4, 17, 2, 'Messala');
 INSERT INTO play (film_id, person_id, rank, name) VALUES (4, 18, 3, 'Quintus Arrius');
+
+
+
+ALTER SEQUENCE films_id_seq RESTART WITH 10;
+ALTER SEQUENCE genres_id_seq RESTART WITH 13;
+ALTER SEQUENCE persons_id_seq RESTART WITH 25;
+ALTER SEQUENCE play_id_seq RESTART WITH 20;
+ALTER SEQUENCE review_id_seq RESTART WITH 1;
+ALTER SEQUENCE user_id_seq RESTART WITH 1;

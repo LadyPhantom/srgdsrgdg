@@ -24,6 +24,8 @@ public class GenreRestController {
         assert(genreManager != null);
     }
 
+    // ----------------------------------------------------------------------- //
+
     /**
      *
      * @param id

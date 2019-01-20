@@ -31,6 +31,8 @@ public class Genre {
     @Column(name = "name", nullable = false, length = 30)
     private String name;
 
+    // ---------- //
+
     /**
      * L'ensemble des films associés au genre
      */
@@ -38,20 +40,18 @@ public class Genre {
     @JsonIgnore
     private Set<Film> films;
 
+    // ----------------------------------------------------------------------- //
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -59,10 +59,11 @@ public class Genre {
     public Set<Film> getFilms() {
         return films;
     }
-
     public void setFilms(Set<Film> films) {
         this.films = films;
     }
+
+    // ---------- //
 
     @Override
     public boolean equals(Object o) {
