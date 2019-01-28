@@ -1,25 +1,16 @@
 package fr.laerce.cinema;
 
-import fr.laerce.cinema.dao.FilmDao;
-import fr.laerce.cinema.model.Film;
-import fr.laerce.cinema.model.Play;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
+import fr.laerce.cinema.service.TmdbFilmManager;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import org.thymeleaf.spring5.ISpringTemplateEngine;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.templateresolver.ITemplateResolver;
-
-import java.util.List;
 
 @SpringBootApplication
 public class CinemaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CinemaApplication.class, args);
+//        SpringApplication.run(CinemaApplication.class, args);
+
+        TmdbFilmManager tfm;
+
     }
 
   /* @Bean

@@ -200,3 +200,14 @@ ALTER SEQUENCE persons_id_seq RESTART WITH 25;
 ALTER SEQUENCE play_id_seq RESTART WITH 20;
 ALTER SEQUENCE review_id_seq RESTART WITH 1;
 ALTER SEQUENCE user_id_seq RESTART WITH 1;
+
+
+
+create table tmdb_movies
+(
+	id bigserial not null
+		constraint tmdb_movies_pkey
+			primary key,
+	title varchar(50),
+	tmdbId bigserial not null
+);
